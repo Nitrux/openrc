@@ -1,0 +1,6 @@
+0001-src-dpkg-start-stop-daemon-compat.patch
+0002-lsb-header-support.patch
+0003-dependency-loop-resolver.patch
+0004-consider-initd-shebangs.patch
+0005-Fix-FTBFS-on-Hurd.patch
+0010-cgroups-after-mountkernfs.patch

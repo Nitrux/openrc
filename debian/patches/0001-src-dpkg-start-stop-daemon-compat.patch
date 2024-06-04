@@ -1,0 +1,71 @@
+From: Mark Hindley <mark@hindley.org.uk>
+Date: Thu, 21 Jul 2022 08:28:28 +0100
+Subject: [PATCH] src:dpkg start-stop-daemon compat.
+
+Closes: #1015765
+---
+ man/openrc-run.8        |  6 ++++++
+ sh/start-stop-daemon.sh | 23 ++++++++++++++---------
+ 2 files changed, 20 insertions(+), 9 deletions(-)
+
+--- a/man/openrc-run.8
++++ b/man/openrc-run.8
+@@ -243,6 +243,10 @@
+ Keep in mind that eval is used to process chroot, command, command_args_*,
+ command_user, pidfile and procname. This may affect how they are
+ evaluated depending on how they are quoted.
++.Pp
++Note that the Debian packaging uses start-stop-daemon(8) from src:dpkg and
++the command_progress, error_log, output_logger, error_logger, capabilities,
++secbits and no_new_privs options are not available and will be ignored.
+ .El
+ .Sh DEPENDENCIES
+ You should define a
+--- a/sh/start-stop-daemon.sh
++++ b/sh/start-stop-daemon.sh
+@@ -10,6 +10,11 @@
+ # This file may not be copied, modified, propagated, or distributed
+ #    except according to the terms contained in the LICENSE file.
+ 
++warn_ssd_unsupported()
++{
++    ewarn "The $1 option is not supported by Debian's start-stop-daemon(8). Ignoring."
++}
++
+ ssd_start()
+ {
+ 	if [ -z "$command" ]; then
+@@ -45,16 +50,16 @@
+ 		--exec $command \
+ 		${chroot:+--chroot} $chroot \
+ 		${directory:+--chdir} $directory \
+-		${output_log+--stdout} $output_log \
+-		${error_log+--stderr} $error_log \
+-		${output_logger:+--stdout-logger \"$output_logger\"} \
+-		${error_logger:+--stderr-logger \"$error_logger\"} \
+-		${capabilities+--capabilities} "$capabilities" \
+-		${secbits:+--secbits} "$secbits" \
+-		${no_new_privs:+--no-new-privs} \
++		${output_log+--output} $output_log \
++		${error_log+$(warn_ssd_unsupported error_log)} \
++		${output_logger:+$(warn_ssd_unsupported output_logger)} \
++		${error_logger:+$(warn_ssd_unsupported error_logger)} \
++		${capabilities+$(warn_ssd_unsupported capabilities)} \
++		${secbits:+$(warn_ssd_unsupported secbits)} \
++		${no_new_privs:+$(warn_ssd_unsupported no_new_privs)} \
+ 		${procname:+--name} $procname \
+ 		${pidfile:+--pidfile} $pidfile \
+-		${command_user+--user} $command_user \
++		${command_user+--chuid} $command_user \
+ 		${umask+--umask} $umask \
+ 		$_background $start_stop_daemon_args \
+ 		-- $command_args $command_args_background
+@@ -85,7 +90,7 @@
+ 	pidfile="${startpidfile:-$pidfile}"
+ 	procname="${startprocname:-$procname}"
+ 	[ -n "$command" -o -n "$procname" -o -n "$pidfile" ] || return 0
+-	yesno "${command_progress}" && _progress=--progress
++	yesno "${command_progress}" && warn_ssd_unsupported progress
+ 	ebegin "Stopping ${name:-$RC_SVCNAME}"
+ 	start-stop-daemon --stop \
+ 		${retry:+--retry} $retry \

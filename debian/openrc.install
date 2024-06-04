@@ -1,0 +1,9 @@
+debian/rc		/etc/init.d
+debian/rcS		/etc/init.d
+debian/tmp/usr/bin            /usr
+debian/tmp/etc                /
+debian/tmp/usr/lib/rc         /usr/lib
+debian/tmp/usr/sbin           /usr
+debian/tmp/usr/share/man/man8 /usr/share/man
+usr/share/bash-completion/completions /usr/share/bash-completion/completions/
+usr/share/zsh/site-functions  /usr/share/zsh/site-functions

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+# begin-remove-after: released:trixie
+if test "$1" = configure; then
+	dpkg-divert --no-rename --package librc1t64 --divert "/lib/#DEB_HOST_MULTIARCH#/librc.so.1.usr-is-merged" --remove "/lib/#DEB_HOST_MULTIARCH#/librc.so.1"
+fi
+# end-remove-after
+
+#DEBHELPER#

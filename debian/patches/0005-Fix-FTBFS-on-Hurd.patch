@@ -1,0 +1,20 @@
+From f82b745bed5b1ed7e35270e872f2e99dfd9f9276 Mon Sep 17 00:00:00 2001
+From: Mark Hindley <mark@hindley.org.uk>
+Date: Mon, 25 Jul 2022 10:03:49 +0100
+Subject: [PATCH] Fix FTBFS on Hurd.
+
+---
+ meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/meson.build
++++ b/meson.build
+@@ -43,7 +43,7 @@
+   os = option_os
+ endif
+ 
+-if os != 'Linux'
++if os != 'Linux' and os != 'GNU'
+   kvm_dep = cc.find_library('kvm', required: true)
+ else
+   kvm_dep = []

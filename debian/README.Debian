@@ -1,0 +1,13 @@
+openrc for Debian
+-----------------
+
+Note that Debian's packaging excludes openrc's start-stop-daemon to avoid
+changing the default implementation from src:dpkg.  The two implementations
+differ slightly in terms of the options accepted and their spelling. Ensure you
+use options compatible with start-stop-daemon(1) in your scripts.
+
+lsb-base: /lib/lsb/init-functions.d/20-left-info-blocks messes up
+the output of OpenRC parallel boot.  To disable this fancy output,
+move the file out of /lib/lsb/init-functions.d.
+
+ -- Mark Hindley <leepen@debian.org>, Mon, 20 Nov 2023 20:17:52 +0000

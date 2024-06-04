@@ -1,0 +1,3 @@
+usr/lib/*/librc.so
+usr/lib/*/libeinfo.so
+usr/share/openrc/support/*

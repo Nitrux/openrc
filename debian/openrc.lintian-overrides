@@ -1,0 +1,7 @@
+init.d-script-does-not-implement-required-option stop *etc/init.d/*
+init.d-script-does-not-implement-required-option restart *etc/init.d/*
+init.d-script-does-not-implement-required-option  force-reload *etc/init.d/*
+init.d-script-does-not-source-init-functions *etc/init.d/*
+init.d-script-missing-lsb-section *etc/init.d/*
+missing-systemd-service-for-init.d-script * *etc/init.d/*
+script-in-etc-init.d-not-registered-via-update-rc.d *etc/init.d/*

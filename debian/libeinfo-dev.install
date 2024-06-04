@@ -1,0 +1,3 @@
+usr/include/einfo.h
+usr/lib/*/pkgconfig/einfo.pc
+usr/share/man/man3/e*       /usr/share/man/man3

@@ -1,0 +1,5 @@
+librc1t64: package-name-doesnt-match-sonames librc1
+# begin-remove-after: released:trixie
+# DEP17
+diversion-for-unknown-file lib/*/librc.so.1 [*]
+# end-remove-after

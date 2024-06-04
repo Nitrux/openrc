@@ -1,0 +1,22 @@
+#!/bin/sh
+# Wrapper of OpenRC called from inittab
+
+set -e
+
+# map numbered to named runlevel
+case $1 in
+	0 )
+		/usr/sbin/openrc off && /usr/sbin/openrc shutdown && \
+			/etc/init.d/halt stop
+		;;
+	1 )
+		exec /usr/sbin/openrc recovery
+		;;
+	6 )
+		/usr/sbin/openrc off && /usr/sbin/openrc reboot && \
+			/etc/init.d/reboot stop
+		;;
+	* )
+		exec /usr/sbin/openrc default
+		;;
+esac

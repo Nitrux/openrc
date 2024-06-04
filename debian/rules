@@ -1,0 +1,46 @@
+#!/usr/bin/make -f
+#export DH_VERBOSE=1
+
+%:
+	dh $@
+
+CONFIG_ARGS = --libexecdir=lib -Drootprefix=/usr
+ifeq ($(DEB_HOST_ARCH_OS),linux)
+        CONFIG_ARGS += -Dpam=true
+else
+        CONFIG_ARGS += -Dpam=false
+endif
+
+override_dh_auto_configure:
+	dh_auto_configure -- $(CONFIG_ARGS)
+
+# override_dh_install:
+# 	dh_install
+# 	# These are symlinks for compatibility reasons, and we don't want
+# 	# them in Debian.
+# 	for file in start-stop-daemon runscript rc service ; do \
+# 		rm -f $(CURDIR)/debian/openrc/usr/sbin/$${file} ; \
+# 	done
+
+# 	# As openrc start-stop-daemon executable is removed above, we don't
+# 	# need to install that pam service.
+# 	rm -rf $(CURDIR)/debian/openrc/etc/pam.d/
+
+# 	# These need to be removed, the same way as other stuff above
+# 	for file in service.8 service.8.gz start-stop-daemon.8 start-stop-daemon.8.gz ; do \
+# 		rm -f $(CURDIR)/debian/openrc/usr/share/man/man8/$${file} ; \
+# 	done
+
+# 	# These are Gentoo specific stuff, we don't want them
+# 	set -e && for i in sysctl.d local.d conf.d ; do \
+# 		rm -rf $(CURDIR)/debian/openrc/etc/$${i} ; \
+# 	done
+
+# 	# We don't want the Gentoo init scripts, but only want agetty, savecache
+# 	# and cgroups to stay: #960182, #960183
+# 	find $(CURDIR)/debian/openrc/etc/init.d/* \
+# 		\! -type d \! -regex ".*/\(agetty\|savecache\|cgroups\|rcS?\)" -delete
+
+# 	for dir in boot default sysinit shutdown; do \
+# 		rm -f $(CURDIR)/debian/openrc/etc/runlevels/$${dir}/* ; \
+# 	done
